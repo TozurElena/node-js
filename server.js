@@ -1,12 +1,25 @@
 const http = require('http');
+const fs = require('fs');
+const url = require('url');
+
+const port = 3000;
 
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
-  res.setHeader('Content-Type', 'rext/html; charset=utf-8');
-  res.end('<h1>Hello World</h1>');
+  //  load the index.html file
+  fs.readFile('./views/index.html', 'utf-8', (err, data) => {
+    if (err) throw err
+
+    //  thanks to the "request" parameter we can retrieve what was typed in the url.
+    let query = url.parse(req.url, true).query;
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    data = data.replace("{{name}}", query.name);
+    res.end(data);
+  })
+  
 });
 // Then the server is told to listen to connections on port 3000.
-const port = 3000;
+
 server.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
