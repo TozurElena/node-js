@@ -1,26 +1,25 @@
-const fs = require('fs');
-const zlib = require('zlib');
+const http = require('http');
+const PORT = 3000;
 
-// creer read stream
-const readStream = fs.createReadStream('./docs/text.txt');
-const writeStream = fs.createWriteStream('./docs/new-text.txt')
-// creer compress stream
-const compressStream = zlib.createGzip();
+const server = http.createServer((req, res) => {
+  console.log('Server request');
+  console.log(req.url, req.method);
 
-// readStream.on('data', (chunk) => {
-//   writeStream.write(chunk);
-//   // chaque morceau lu est transféré dans le flux d'écriture vers un nouveau fichier
-// })
+  // res.setHeader('Content-Type', 'text/html');
+  // res.write('<head><link rel="stylesheet" href="#"></head>');
+  // res.write('<h1>Hello!</h1>');// afficher le texte dans le navigateur
+  // res.write('<p>My name is Elena</p>');// 
+  // touts write doit etre avant method end
 
-const handleError = () => {
-  console.log('Error');
-  readStream.destroy(); //delete read stream
-  writeStream.end('Finished with error...');//add line in end
-}
+  res.setHeader('Content-Type', 'application/json');
+  const data = JSON.stringify([
+    {name: 'Tommy', age: 35},
+    {name: 'Arthur', age: 45},
 
-readStream
-  .on('error', handleError)
-  // donne read, compresse et write in file
-  .pipe(compressStream)
-  .pipe(writeStream)
-  .on('error', handleError);
+  ])
+  res.end(data);
+});
+
+server.listen(PORT, 'localhost', (error) => {
+  error ? console.log(error) : console.log(`listening port ${PORT}`);
+});
