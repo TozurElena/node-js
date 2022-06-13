@@ -1,22 +1,26 @@
-const { error } = require('console');
 const fs = require('fs');
+const zlib = require('zlib');
 
-fs.readFile('./text.txt', 'utf8', (error, data) => {
-  fs.mkdir('./files', () => {
-    fs.writeFile('./files/test2.txt', `${data} New text`, () => {
-      error ?console.log(error) : null;
-    });
-  });
-});
-// delete file
-setTimeout(() => {
-  if (fs.existsSync('./files/test2.txt')) {
-    fs.unlink('./files/test2.txt', () => {});
-  }
-}, 4000);
-// delete dossier
-setTimeout(() => {
-  if (fs.existsSync('./files')) {
-    fs.rmdir('./files', () => {});
-  }
-}, 6000);
+// creer read stream
+const readStream = fs.createReadStream('./docs/text.txt');
+const writeStream = fs.createWriteStream('./docs/new-text.txt')
+// creer compress stream
+const compressStream = zlib.createGzip();
+
+// readStream.on('data', (chunk) => {
+//   writeStream.write(chunk);
+//   // chaque morceau lu est transféré dans le flux d'écriture vers un nouveau fichier
+// })
+
+const handleError = () => {
+  console.log('Error');
+  readStream.destroy(); //delete read stream
+  writeStream.end('Finished with error...');//add line in end
+}
+
+readStream
+  .on('error', handleError)
+  // donne read, compresse et write in file
+  .pipe(compressStream)
+  .pipe(writeStream)
+  .on('error', handleError);
