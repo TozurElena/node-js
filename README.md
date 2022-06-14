@@ -1,6 +1,6 @@
 # node-js
  
-## Description:##
+## Description:
 We look at Node.js, a server-side technology that allows you to execute code written in JavaScript outside the browser. 
 Let's analyze the basic concepts and built-in modules that are actively used in server development. 
 Consider the mechanism of communication between the server and the browser. Let's create a basic routing in pure Node.js. 
