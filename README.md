@@ -17,11 +17,11 @@ And finally, let's upload the finished application to Heroku.
 - [JSON Viewer](https://chrome.google.com/webstore/detail/json-viewer/gbmdgpbipfallnflgajpaliibnhdgobh?hl=ru)
 
 ### Useful links:
-- [Node.js (официальный сайт)](https://nodejs.org/en/)
+- [Node.js (official site)](https://nodejs.org/en/)
 - [Node Package Manager](https://www.npmjs.com)
-- [Express (Node.js фреймворк)](https://expressjs.com/ru/)
-- [MongoDB (база данных)](https://www.mongodb.com)
-- [Mongoose (создание моделей для Node.js)](https://mongoosejs.com)
+- [Express (Node.js framework)](https://expressjs.com/ru/)
+- [MongoDB (database)](https://www.mongodb.com)
+- [Mongoose (creating models for Node.js)](https://mongoosejs.com)
 
 ### Used modules:
 - [nodemon](https://www.npmjs.com/package/nodemon)
