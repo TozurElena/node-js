@@ -21,6 +21,17 @@ app.get('/contacts', (req, res) => {
   res.sendFile(createPath('contacts'));
 })
 
+app.get('/posts/:id', (req, res) => {
+  res.sendFile(createPath('post'));
+})
+
+app.get('/posts', (req, res) => {
+  res.sendFile(createPath('posts'));
+})
+
+app.get('/add-post', (req, res) => {
+  res.sendFile(createPath('add-post'));
+})
 
 app.get('/about-us', (req, res) => {
   res.redirect('contacts');
