@@ -3,42 +3,49 @@ const path = require('path');
 
 const app = express();
 
+app.set('view engine', 'ejs');
+
 const PORT = 3000;
 
-const createPath = (page) => path.resolve(__dirname, 'views', `${page}.html`);
+const createPath = (page) => path.resolve(__dirname, 'ejs-views', `${page}.ejs`);
 
-app.listen(PORT,  (error) => {
-  error ? console.log(error) : console.log(`listening port ${PORT}` );
+app.listen(PORT, (error) => {
+  error ? console.log(error) : console.log(`listening port ${PORT}`);
 });
 
-// otpravluem donnes de server à brauser
 app.get('/', (req, res) => {
-  // send utilise à lieux read et write
-  res.sendFile(createPath('index'));
-})
+  const title = 'Home';
+  res.render(createPath('index'), { title });
+});
 
 app.get('/contacts', (req, res) => {
-  res.sendFile(createPath('contacts'));
-})
+  const title = 'Contacts';
+  const contacts = [
+    { name: 'YouTube', link: 'http://youtube.com/YauhenKavalchuk' },
+    { name: 'Twitter', link: 'http://github.com/YauhenKavalchuk' },
+    { name: 'GitHub', link: 'http://twitter.com/YauhenKavalchuk' },
+  ];
+  res.render(createPath('contacts'), { contacts, title });
+});
 
 app.get('/posts/:id', (req, res) => {
-  res.sendFile(createPath('post'));
-})
+  const title = 'Post';
+  res.render(createPath('post'), { title });
+});
 
 app.get('/posts', (req, res) => {
-  res.sendFile(createPath('posts'));
-})
+  const title = 'Posts';
+  res.render(createPath('posts'), { title });
+});
 
 app.get('/add-post', (req, res) => {
-  res.sendFile(createPath('add-post'));
-})
+  const title = 'Add Post';
+  res.render(createPath('add-post'), { title });
+});
 
-app.get('/about-us', (req, res) => {
-  res.redirect('contacts');
-})
-
-app.use( (req, res) => {
+app.use((req, res) => {
+  const title = 'Error Page';
   res
     .status(404)
-    .sendFile(createPath('error'));
-})
+    .render(createPath('error'), { title });
+});
