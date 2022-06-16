@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const morgan = require('morgan');
 
 const app = express();
 
@@ -12,6 +13,11 @@ const createPath = (page) => path.resolve(__dirname, 'ejs-views', `${page}.ejs`)
 app.listen(PORT, (error) => {
   error ? console.log(error) : console.log(`listening port ${PORT}`);
 });
+// creer middleware
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
+
+// faire style dostupnimi
+app.use(express.static('styles'));
 
 app.get('/', (req, res) => {
   const title = 'Home';
@@ -42,7 +48,7 @@ app.get('/add-post', (req, res) => {
   const title = 'Add Post';
   res.render(createPath('add-post'), { title });
 });
-
+// middleware pour perehvata error, doit etre en fin
 app.use((req, res) => {
   const title = 'Error Page';
   res
