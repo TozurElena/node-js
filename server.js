@@ -3,6 +3,7 @@ const path = require('path');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const Post = require('./models/post');
+const Contact = require('./models/contact')
 
 const app = express();
 
@@ -40,12 +41,13 @@ app.get('/', (req, res) => {
 
 app.get('/contacts', (req, res) => {
   const title = 'Contacts';
-  const contacts = [
-    { name: 'YouTube', link: 'http://youtube.com/YauhenKavalchuk' },
-    { name: 'Twitter', link: 'http://github.com/YauhenKavalchuk' },
-    { name: 'GitHub', link: 'http://twitter.com/YauhenKavalchuk' },
-  ];
-  res.render(createPath('contacts'), { contacts, title });
+  Contact 
+    .find()
+    .then((contacts) => res.render(createPath('contacts'), { contacts, title }))
+    .catch((error) => {
+      console.log(error);
+      res.render(createPath('error'), {title: 'Error'});
+    });
 });
 
 app.get('/posts/:id', (req, res) => {
