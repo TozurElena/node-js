@@ -8,6 +8,15 @@ const app = express();
 app.set('view engine', 'ejs');
 
 const PORT = 3000;
+const db = 'mongodb+srv://TozurElena:Pass321@cluster0.devdv1d.mongodb.net/node-blog?retryWrites=true&w=majority';
+
+mongoose
+  .connect(db, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then((res) => console.log('Connected to DB'))
+  .catch((error) => console.log(error));
 
 const createPath = (page) => path.resolve(__dirname, 'ejs-views', `${page}.ejs`);
 
