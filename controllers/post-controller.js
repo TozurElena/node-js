@@ -1,15 +1,17 @@
 const Post = require('../models/post');
 const createPath = require('../helpers/creata-path');
 
+const handleError = (res, error) => {
+  console.log(error);
+  res.render(createPath('error'), {title: 'Error'});
+}
+
 const getPost = (req, res) => {
   const title = 'Post';
   Post 
     .findById(req.params.id)
     .then((post) => res.render(createPath('post'), { post, title }))
-    .catch((error) => {
-      console.log(error);
-      res.render(createPath('error'), {title: 'Error'});
-    });
+    .catch((error) => handleError(res, error));
 };
 
 const deletePost = (req, res) => {
@@ -17,10 +19,7 @@ const deletePost = (req, res) => {
   Post 
     .findByIdAndDelete(req.params.id)
     .then(result => res.sendStatus(200))
-    .catch((error) => {
-      console.log(error);
-      res.render(createPath('error'), {title: 'Error'});
-    });
+    .catch((error) => handleError(res, error));
 }
 
 const getEditPost = (req, res) => {
@@ -28,10 +27,7 @@ const getEditPost = (req, res) => {
   Post 
     .findById(req.params.id)
     .then((post) => res.render(createPath('edit-post'), { post, title }))
-    .catch((error) => {
-      console.log(error);
-      res.render(createPath('error'), {title: 'Error'});
-    });
+    .catch((error) => handleError(res, error));
 }
 
 const editPost = (req, res) => {
@@ -41,10 +37,7 @@ const editPost = (req, res) => {
     // chercher un element sur id
     .findByIdAndUpdate(id, { title, author, text } )
     .then(result => res.redirect(`/posts/${id}`))
-    .catch((error) => {
-      console.log(error);
-      res.render(createPath('error'), {title: 'Error'});
-    });
+    .catch((error) => handleError(res, error));
 }
 
 const getPosts = (req, res) => {
@@ -54,10 +47,7 @@ const getPosts = (req, res) => {
     // sort sur date 
     .sort({ createdAt: -1})
     .then((posts) => res.render(createPath('posts'), { posts, title }))
-    .catch((error) => {
-      console.log(error);
-      res.render(createPath('error'), {title: 'Error'});
-    });
+    .catch((error) => handleError(res, error));
 };
 
 const getAddPost = (req, res) => {
@@ -71,10 +61,7 @@ const addPost = (req, res) => {
   post  
     .save()
     .then((result) => res.redirect('/posts'))
-    .catch((error) => {
-      console.log(error);
-      res.render(createPath('error'), {title: 'Error'});
-    });
+    .catch((error) => handleError(res, error));
 };
 
 module.exports = {
