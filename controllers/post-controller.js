@@ -1,5 +1,5 @@
 const Post = require('../models/post');
-const createPath = require('../helpers/creata-path');
+const createPath = require('../helpers/create-path');
 
 const handleError = (res, error) => {
   console.log(error);

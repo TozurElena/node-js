@@ -1,5 +1,5 @@
 const Contact = require('../models/contact');
-const createPath = require('../helpers/creata-path');
+const createPath = require('../helpers/create-path');
 
 
 const getContacts = (req, res) => {
