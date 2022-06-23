@@ -1,22 +1,57 @@
 const { error } = require('console');
+const http = require('http');
 const fs = require('fs');
+const path = require('path');
 
-fs.readFile('./text.txt', 'utf8', (error, data) => {
-  fs.mkdir('./files', () => {
-    fs.writeFile('./files/test2.txt', `${data} New text`, () => {
-      error ?console.log(error) : null;
-    });
-  });
+const PORT = 3000;
+
+const server = http.createServer((req, res) => {
+  console.log('Server request');
+  console.log('Just for test');
+
+  res.setHeader('Content-Type', 'text/html');
+  //  __dirname - object global, poluchaem path to file
+  const createPath = (page) => path.resolve(__dirname, 'views', `${page}.html`);
+
+  let basePath = '';
+
+  switch(req.url) {
+    case '/':
+    case '/home':
+    case '/index.html':
+      basePath = createPath('index');
+      res.statusCode = 200;
+      break;
+    case'/about-us':  //staraia page contacts, faire redirect
+      res.statusCode = 301; //redirect avec message
+      res.setHeader('Location', '/contacts');
+      res.end();
+      break;
+    case '/contacts':
+      basePath = createPath('contacts');
+      res.statusCode = 200;
+      break;
+    default:
+      basePath = createPath('error');
+      res.statusCode = 404;
+      break;
+  }
+  // ouvrir pages 
+    fs.readFile(basePath, (err, data) => {
+      if (err) {
+        console.log(err);
+        res.statusCode = 500;
+        res.end(); //vsegda nugno terminer reponse pour vernut control brauzery
+      }
+      else {
+        res.write(data);
+        res.end();
+      }
+    })
+  
+
 });
-// delete file
-setTimeout(() => {
-  if (fs.existsSync('./files/test2.txt')) {
-    fs.unlink('./files/test2.txt', () => {});
-  }
-}, 4000);
-// delete dossier
-setTimeout(() => {
-  if (fs.existsSync('./files')) {
-    fs.rmdir('./files', () => {});
-  }
-}, 6000);
+
+server.listen(PORT, 'localhost', (error) => {
+  error ? console.log(error) : console.log(`listening port ${PORT}` );
+});
